@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Стоянка разрешена?</string>
+    <string name="notification">Напомнить</string>
+    <string name="current_date_label">Текущее время</string>
+    <string name="current_time_example">22:26</string>
+    <string name="current_date_example">СБ, 2 ИЮНЯ</string>
+    <string name="info_message_example">До 21:00 сегодняшнего дня</string>
+</resources>
