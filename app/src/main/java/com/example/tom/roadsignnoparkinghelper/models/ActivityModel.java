@@ -9,10 +9,10 @@ public class ActivityModel {
     public ActivityModel(SignFragmentModel signFragmentModelFirst, SignFragmentModel signFragmentModelSecond) {
         this.signFragmentModelFirst = signFragmentModelFirst;
         this.signFragmentModelSecond = signFragmentModelSecond;
-        if (signFragmentModelFirst.isAccessed() == signFragmentModelSecond.isAccessed()) {
+        if (signFragmentModelFirst.getAccessType() == signFragmentModelSecond.getAccessType()) {
             preferenceSignFragmentModel = signFragmentModelFirst.getDate().after(signFragmentModelSecond.getDate()) ? signFragmentModelFirst : signFragmentModelSecond;
         } else {
-            preferenceSignFragmentModel = signFragmentModelFirst.isAccessed() ? signFragmentModelFirst : signFragmentModelSecond;
+            preferenceSignFragmentModel = signFragmentModelFirst.getAccessType()== AccessType.ALLOWED ? signFragmentModelFirst : signFragmentModelSecond;
         }
     }
 

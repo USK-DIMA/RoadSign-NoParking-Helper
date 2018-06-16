@@ -1,4 +1,4 @@
-package com.example.tom.roadsignnoparkinghelper.fragment;
+package com.example.tom.roadsignnoparkinghelper.models;
 
 import com.example.tom.roadsignnoparkinghelper.R;
 import com.example.tom.roadsignnoparkinghelper.util.Function;

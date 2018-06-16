@@ -1,27 +1,31 @@
 package com.example.tom.roadsignnoparkinghelper.models;
 
-import com.example.tom.roadsignnoparkinghelper.fragment.SignType;
-
 import java.util.Date;
 
 public class SignFragmentModel {
 
     private SignType signType;
-    private boolean accessed;
+    private AccessType accessType;
     private Date date;
+    private DayType dateDayType;
 
-    public SignFragmentModel(SignType signType, boolean accessed, Date date) {
+    public SignFragmentModel(SignType signType, AccessType accessType, Date date, DayType dateDayType) {
         this.signType = signType;
-        this.accessed = accessed;
+        this.accessType = accessType;
         this.date = date;
+        this.dateDayType = dateDayType;
+    }
+
+    public DayType getDateDayType() {
+        return dateDayType;
     }
 
     public SignType getSignType() {
         return signType;
     }
 
-    public boolean isAccessed() {
-        return accessed;
+    public AccessType getAccessType() {
+        return accessType;
     }
 
     public Date getDate() {

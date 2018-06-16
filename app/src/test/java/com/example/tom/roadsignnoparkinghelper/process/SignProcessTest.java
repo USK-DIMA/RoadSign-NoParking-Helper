@@ -1,28 +1,27 @@
 package com.example.tom.roadsignnoparkinghelper.process;
 
-import com.example.tom.roadsignnoparkinghelper.fragment.SignFragment;
-import com.example.tom.roadsignnoparkinghelper.fragment.SignType;
+import com.example.tom.roadsignnoparkinghelper.models.AccessType;
 import com.example.tom.roadsignnoparkinghelper.models.ActivityModel;
-import com.example.tom.roadsignnoparkinghelper.models.SignFragmentModel;
+import com.example.tom.roadsignnoparkinghelper.models.DayType;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
-
-import static org.junit.Assert.*;
 
 public class SignProcessTest {
 
     private final SignProcess signProcess = new SignProcess();
 
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    
     private Calendar stringToCalendar(String date) throws ParseException {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(SignFragment.DATE_FORMAT.parse(date));// all done
+        cal.setTime(DATE_FORMAT.parse(date));
         return cal;
     }
 
@@ -30,10 +29,13 @@ public class SignProcessTest {
     public void oddToEvenTest1() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("15.06.2018 17:00"));
-        Assert.assertFalse(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("15.06.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("15.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("15.06.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("15.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -41,10 +43,12 @@ public class SignProcessTest {
     public void oddToEvenTest2() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("15.06.2018 20:00"));
-        Assert.assertTrue(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("16.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("15.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("16.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("15.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelFirst(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -52,10 +56,12 @@ public class SignProcessTest {
     public void oddToEvenTest3() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("15.06.2018 21:00"));
-        Assert.assertTrue(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("16.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertFalse(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("16.06.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("16.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("16.06.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelFirst(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -63,10 +69,12 @@ public class SignProcessTest {
     public void oddToEvenTest4() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("15.06.2018 22:00"));
-        Assert.assertTrue(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("16.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertFalse(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("16.06.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("16.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("16.06.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelFirst(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -74,10 +82,12 @@ public class SignProcessTest {
     public void evenToOddTest1() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("16.06.2018 17:00"));
-        Assert.assertTrue(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("16.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertFalse(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("16.06.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("16.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("16.06.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelFirst(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -85,10 +95,12 @@ public class SignProcessTest {
     public void evenToOddTest2() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("16.06.2018 20:00"));
-        Assert.assertTrue(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("16.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("17.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("16.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("17.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -96,10 +108,12 @@ public class SignProcessTest {
     public void evenToOddTest3() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("16.06.2018 21:00"));
-        Assert.assertFalse(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("17.06.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("17.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("17.06.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("17.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -107,10 +121,12 @@ public class SignProcessTest {
     public void evenToOddTest4() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("16.06.2018 22:00"));
-        Assert.assertFalse(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("17.06.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("17.06.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("17.06.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("17.06.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -126,10 +142,12 @@ public class SignProcessTest {
     public void oddToOddTest1() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("31.01.2018 17:00"));
-        Assert.assertFalse(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("31.01.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("01.02.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("31.01.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("01.02.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -137,10 +155,12 @@ public class SignProcessTest {
     public void oddToOddTest2() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("31.01.2018 19:00"));
-        Assert.assertTrue(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("31.01.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("01.02.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TODAY, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("31.01.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("01.02.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -148,10 +168,12 @@ public class SignProcessTest {
     public void oddToOddTest3() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("31.01.2018 21:00"));
-        Assert.assertFalse(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("01.02.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("01.02.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("01.02.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("01.02.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 
@@ -159,10 +181,26 @@ public class SignProcessTest {
     public void oddToOddTest4() throws ParseException {
         ActivityModel activityModel;
         activityModel = signProcess.execute(stringToCalendar("31.01.2018 22:00"));
-        Assert.assertFalse(activityModel.getSignFragmentModelFirst().isAccessed());
-        Assert.assertEquals("01.02.2018 19:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
-        Assert.assertTrue(activityModel.getSignFragmentModelSecond().isAccessed());
-        Assert.assertEquals("01.02.2018 21:00", SignFragment.DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("01.02.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("01.02.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
+        Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
+    }
+
+    @Test
+    public void oddToOddTest5() throws ParseException {
+        ActivityModel activityModel;
+        activityModel = signProcess.execute(stringToCalendar("30.01.2018 22:00"));
+        Assert.assertEquals(AccessType.DENIED, activityModel.getSignFragmentModelFirst().getAccessType());
+        
+        Assert.assertEquals(DayType.TOMORROW, activityModel.getSignFragmentModelFirst().getDateDayType());
+        Assert.assertEquals("31.01.2018 19:00", DATE_FORMAT.format(activityModel.getSignFragmentModelFirst().getDate()));
+        Assert.assertEquals(AccessType.ALLOWED, activityModel.getSignFragmentModelSecond().getAccessType());
+        Assert.assertEquals(DayType.DAY_AFTER_TOMORROW, activityModel.getSignFragmentModelSecond().getDateDayType());
+        Assert.assertEquals("01.02.2018 21:00", DATE_FORMAT.format(activityModel.getSignFragmentModelSecond().getDate()));
         Assert.assertEquals(activityModel.getSignFragmentModelSecond(), activityModel.getPreferenceSignFragmentModel());
     }
 }

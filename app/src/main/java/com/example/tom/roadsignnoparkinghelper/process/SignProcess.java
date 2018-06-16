@@ -1,6 +1,8 @@
 package com.example.tom.roadsignnoparkinghelper.process;
 
-import com.example.tom.roadsignnoparkinghelper.fragment.SignType;
+import com.example.tom.roadsignnoparkinghelper.models.AccessType;
+import com.example.tom.roadsignnoparkinghelper.models.DayType;
+import com.example.tom.roadsignnoparkinghelper.models.SignType;
 import com.example.tom.roadsignnoparkinghelper.models.ActivityModel;
 import com.example.tom.roadsignnoparkinghelper.models.SignFragmentModel;
 import com.example.tom.roadsignnoparkinghelper.util.Function;
@@ -24,34 +26,44 @@ public class SignProcess {
         return execute(GregorianCalendar.getInstance());
     }
 
-    private SignFragmentModel calculate(Calendar currentDate, SignType signType) {
-        boolean isAccessed;
+    private SignFragmentModel calculate(Calendar today, SignType signType) {
+        AccessType accessType;
+        DayType dayType;
         Date date;
         Function<Integer, Boolean> parity = signType.getParity();
-        int currentDay = currentDate.get(Calendar.DAY_OF_MONTH);
-        int currentHour = currentDate.get(Calendar.HOUR_OF_DAY);
-        Calendar nextDate = (Calendar) currentDate.clone();
-        nextDate.add(Calendar.DAY_OF_MONTH, 1);
-        int nextDay = nextDate.get(Calendar.DAY_OF_MONTH);
+        int currentDay = today.get(Calendar.DAY_OF_MONTH);
+        int currentHour = today.get(Calendar.HOUR_OF_DAY);
+        Calendar tomorrow = nextDay(today);
+        int nextDay = tomorrow.get(Calendar.DAY_OF_MONTH);
         if ((parity.apply(currentDay) && (currentHour < CHANGE_OF_DAY_HOUR))
                 || ((currentHour < CHANGE_OF_DAY_HOUR && currentHour >= FREE_HOUR))
                 || (parity.apply(nextDay) && (currentHour >= CHANGE_OF_DAY_HOUR))
                 ) {
-            isAccessed = true;
+            accessType = AccessType.ALLOWED;
+            Calendar d = today;
+            dayType = DayType.TODAY;
             if (parity.apply((nextDay))) {
-                date = createDate(nextDate, CHANGE_OF_DAY_HOUR, 0);
-            } else {
-                date = createDate(currentDate, CHANGE_OF_DAY_HOUR, 0);
+                Calendar dayAfterTomorrow = nextDay(tomorrow);
+                if(parity.apply(dayAfterTomorrow.get(Calendar.DAY_OF_MONTH))) {
+                    d = dayAfterTomorrow;
+                    dayType = DayType.DAY_AFTER_TOMORROW;
+                } else {
+                    d = tomorrow;
+                    dayType = DayType.TOMORROW;
+                }
             }
+            date = createDate(d, CHANGE_OF_DAY_HOUR, 0);
         } else {
-            isAccessed = false;
+            accessType = AccessType.DENIED;
             if(currentHour < CHANGE_OF_DAY_HOUR) {
-                date = createDate(currentDate, FREE_HOUR, 0);
+                dayType = DayType.TODAY;
+                date = createDate(today, FREE_HOUR, 0);
             } else {
-                date = createDate(nextDate, FREE_HOUR, 0);
+                dayType = DayType.TOMORROW;
+                date = createDate(tomorrow, FREE_HOUR, 0);
             }
         }
-        return new SignFragmentModel(signType, isAccessed, date);
+        return new SignFragmentModel(signType, accessType, date, dayType);
     }
 
     private Date createDate(Calendar calendarDay, int hour, int min) {
@@ -64,5 +76,11 @@ public class SignProcess {
 
     private int calendarYearToDateYear(int calendarYear) {
         return calendarYear - 1900;
+    }
+
+    private Calendar nextDay(Calendar calendar) {
+        Calendar clone = (Calendar) calendar.clone();
+        clone.add(Calendar.DAY_OF_MONTH, 1);
+        return clone;
     }
 }

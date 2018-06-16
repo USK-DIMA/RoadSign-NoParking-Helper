@@ -23,7 +23,7 @@ import java.util.Date;
 public class SignFragment extends Fragment {
 
     @SuppressLint("SimpleDateFormat")
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("HH:mm");
 
     private Resources res;
     private ImageView sign;
@@ -51,24 +51,16 @@ public class SignFragment extends Fragment {
 
     public void fill(SignFragmentModel signFragmentModel) {
         sign.setImageDrawable(res.getDrawable(signFragmentModel.getSignType().getDrawableId()));
-        String text;
-        int color;
-
-        if(signFragmentModel.isAccessed()) {
-            //todo в константы
-            //todo не выводить дату, выводить сегодня/завтра
-            text = "Разрешено до " + dateToString(signFragmentModel.getDate());
-            //todo в константы
-            color = Color.GREEN;
-        } else {
-            //todo в константы
-            //todo не выводить дату, выводить сегодня/завтра
-            text = "Запрещено до " + dateToString(signFragmentModel.getDate());
-            //todo в константы
-            color = Color.RED;
-        }
+        String text  = buildText(signFragmentModel);
+        int color = signFragmentModel.getAccessType().getColor();
         textView.setTextColor(color);
         textView.setText(text);
+    }
+
+    private String buildText(SignFragmentModel signFragmentModel) {
+        return signFragmentModel.getAccessType().getText() +
+                signFragmentModel.getDateDayType().getText() +
+                dateToString(signFragmentModel.getDate());
     }
 
     public void setFragmentCreatedListener(FragmentCreatedListener fragmentCreatedListener) {
