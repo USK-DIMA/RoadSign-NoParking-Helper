@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".activity.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_weight="1"
+            android:layout_width="300dp"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/signOneFragment"
+                android:name="com.example.tom.roadsignnoparkinghelper.fragment.SignFragment"
+                app:layout_constraintTop_toBottomOf="@+id/dateWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_weight="1"
+            android:layout_width="300dp"
+            android:layout_height="match_parent">
+            <fragment
+                android:id="@+id/signTwoFragment"
+                android:name="com.example.tom.roadsignnoparkinghelper.fragment.SignFragment"
+                app:layout_constraintTop_toBottomOf="@+id/dateWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+
+        <!--<android.support.constraint.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/wrapperOne"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:padding="@dimen/wrapper_padding"
+                app:layout_constraintBottom_toTopOf="@+id/info"
+                app:layout_constraintTop_toBottomOf="@+id/dateWrapper">
+
+                <ImageView
+                    android:id="@+id/imageOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/one" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/infoOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/infoMessageTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/info_message_example"
+                    android:textColor="@color/colorInfoMessage"
+                    android:textSize="25sp" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/wrapperTwo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:padding="@dimen/wrapper_padding">
+
+                <ImageView
+                    android:id="@+id/imageTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    app:srcCompat="@drawable/two" />
+            </android.support.constraint.ConstraintLayout>
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/infoTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <TextView
+                    android:id="@+id/infoMessageTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/info_message_example"
+                    android:textColor="@color/colorInfoMessage"
+                    android:textSize="25sp" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>-->
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

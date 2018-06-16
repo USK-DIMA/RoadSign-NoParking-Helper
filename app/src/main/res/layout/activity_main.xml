@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
 
     <LinearLayout
@@ -38,46 +38,13 @@
             android:text="@string/current_date_example"
             android:textColor="@color/colorDate"
             android:textSize="15sp"/>
-
     </LinearLayout>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="@dimen/wrapper_padding"
+    <fragment
+        android:id="@+id/preferableSignFragment"
+        android:name="com.example.tom.roadsignnoparkinghelper.fragment.SignFragment"
         app:layout_constraintTop_toBottomOf="@+id/dateWrapper"
-        app:layout_constraintBottom_toTopOf="@+id/info">
-
-        <ImageView
-            android:id="@+id/imageOne"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/one" />
-
-        <ImageView
-            android:id="@+id/imageTwo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/two" />
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toBottomOf="parent">
-
-        <TextView
-            android:id="@+id/infoMessage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/info_message_example"
-            android:textColor="@color/colorInfoMessage"
-            android:textSize="25sp" />
-    </android.support.constraint.ConstraintLayout>
+        android:layout_height="wrap_content" />
 
 </android.support.constraint.ConstraintLayout>
