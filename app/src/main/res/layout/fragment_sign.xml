@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     app:layout_constraintBottom_toBottomOf="parent"
-    tools:context=".fragment.SignFragment">
+    tools:context="ru.uskov.dmitry.road.sign.parking.helper.fragment.SignFragment">
 
 
     <android.support.constraint.ConstraintLayout

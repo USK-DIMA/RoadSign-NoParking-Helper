@@ -1,8 +1,40 @@
 <resources>
     <string name="app_name">Стоянка разрешена?</string>
     <string name="notification">Напомнить</string>
+    <string name="undefined">Неизвестно</string>
     <string name="current_date_label">Текущее время</string>
     <string name="current_time_example">22:26</string>
     <string name="current_date_example">СБ, 2 ИЮНЯ</string>
     <string name="info_message_example">До 21:00 сегодняшнего дня</string>
+    
+    <string name="day_of_week_0">ПН</string>
+    <string name="day_of_week_1">ВТ</string>
+    <string name="day_of_week_2">СР</string>
+    <string name="day_of_week_3">ЧТ</string>
+    <string name="day_of_week_4">ПТ</string>
+    <string name="day_of_week_5">СБ</string>
+    <string name="day_of_week_6">ВС</string>
+
+
+    <string name="month_0">января</string>
+    <string name="month_1">февраля</string>
+    <string name="month_2">марта</string>
+    <string name="month_3">апреля</string>
+    <string name="month_4">мая</string>
+    <string name="month_5">июня</string>
+    <string name="month_6">июля</string>
+    <string name="month_7">августа</string>
+    <string name="month_8">сентября</string>
+    <string name="month_9">октября</string>
+    <string name="month_10">ноября</string>
+    <string name="month_11">декабря</string>
+    
+    <string name="today"></string>
+    <string name="tomorrow">завтра\ </string>
+    <string name="day_after_tomorrow">послезавтра\ </string>
+    
+    <string name="allowed_before">Разрешено до\ </string>
+    <string name="forbidden_before">Запрещено до\ </string>
+
+
 </resources>

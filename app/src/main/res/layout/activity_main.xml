@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="15dp"
-    tools:context=".activity.MainActivity">
+    tools:context="ru.uskov.dmitry.road.sign.parking.helper.activity.MainActivity">
 
 
     <LinearLayout
@@ -42,7 +42,7 @@
 
     <fragment
         android:id="@+id/preferableSignFragment"
-        android:name="com.example.tom.roadsignnoparkinghelper.fragment.SignFragment"
+        android:name="ru.uskov.dmitry.road.sign.parking.helper.fragment.SignFragment"
         app:layout_constraintTop_toBottomOf="@+id/dateWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
